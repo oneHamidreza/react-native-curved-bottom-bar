@@ -83,7 +83,7 @@ const BottomBarComponent: NavigatorBottomBar = React.forwardRef((props, ref) => 
     setselectedTab(name);
     const index = children.findIndex(e => e.props?.name == name);
     if (index >= 0) {
-      refPageView.current.setPage(index);
+      refPageView.current.setPageWithoutAnimation(index);
     }
   };
 
