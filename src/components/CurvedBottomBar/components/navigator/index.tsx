@@ -44,7 +44,7 @@ const BottomBarComponent: NavigatorBottomBar = React.forwardRef((props, ref) => 
   }));
 
   useImperativeHandle(ref, () => {
-    return { navigate: navigate, getRouteName: selectedTab };
+    return { navigate: navigate, getRouteName: selectedTab, setStyle, };
   });
 
   const navigate = (routeName: string) => {
