@@ -38,6 +38,7 @@ const BottomBarComponent: NavigatorBottomBar = React.forwardRef((props, ref) => 
   const children = props?.children as any[];
   const orientation = useDeviceOrientation();
   const refPageView: any = useRef(null);
+  const containerRef: any = useRef(null);
   const [lazyList] = useState<Boolean[]>([...Array(children.length)].map((item, index) => {
     return false;
   }));
@@ -48,6 +49,10 @@ const BottomBarComponent: NavigatorBottomBar = React.forwardRef((props, ref) => 
 
   const navigate = (routeName: string) => {
     setRouteName(routeName);
+  };
+
+  const setStyle = (style: any) => {
+    containerRef?.current?.setNativeProps({style:[styles.container, style]})
   };
 
 
@@ -129,7 +134,7 @@ const BottomBarComponent: NavigatorBottomBar = React.forwardRef((props, ref) => 
           {children.map(_renderTab)}
         </PagerView>
 
-        <View style={[styles.container, style]}>
+        <View ref={containerRef} style={[styles.container, style]}>
           <Svg width={maxWidth} height={height + (type === 'down' ? 0 : 30)}>
             <Path fill={bgColor} stroke="#DDDDDD" strokeWidth={strokeWidth} {...{ d }} />
           </Svg>
