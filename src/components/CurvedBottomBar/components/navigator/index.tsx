@@ -38,8 +38,12 @@ const BottomBarComponent: NavigatorBottomBar = React.forwardRef((props, ref) => 
   const menuRef: any = useRef(null);
 
   useImperativeHandle(ref, () => {
-    return {navigate: navigate, getRouteName: selectedTabVariable[0], setStyle,};
+    return {navigate: navigate, getRouteName: getRouteName, setStyle,};
   });
+
+  const getRouteName = () => {
+    return selectedTabVariable[0]
+  }
 
   const navigate = (name: string) => {
     updateSelectedTab(name)
