@@ -14,6 +14,9 @@ const defaultProps = {
   strokeWidth: 0
 };
 
+//bad approach
+let tabSelected = ''
+
 const BottomBarComponent: NavigatorBottomBar = React.forwardRef((props, ref) => {
   const {
     type,
@@ -31,31 +34,30 @@ const BottomBarComponent: NavigatorBottomBar = React.forwardRef((props, ref) => 
   } = props;
   // console.log('BottomNavigation Render')
 
-  const selectedTabVariable = useState<string>(initialRouteName);
   const children = props?.children as any[];
   const refPageView: any = useRef(null);
   const containerRef: any = useRef(null);
   const menuRef: any = useRef(null);
 
-  useImperativeHandle(ref, () => {
-    return {navigate: navigate, getRouteName: getRouteName, setStyle,};
-  });
-
   const getRouteName = () => {
-    return selectedTabVariable[0]
+    return tabSelected
   }
 
   const navigate = (name: string) => {
     updateSelectedTab(name)
     const index = children.findIndex(e => e.props?.name == name);
     if (index >= 0) {
-      refPageView.current.setPageWithoutAnimation(index);
+      refPageView?.current?.setPageWithoutAnimation(index);
     }
   };
 
   const setStyle = (style: any) => {
     containerRef?.current?.setNativeProps({style: [styles.container, style]})
   };
+
+  useImperativeHandle(ref, () => {
+    return {navigate: navigate, getRouteName: () => (tabSelected), setStyle,};
+  }, [tabSelected]);
 
   const selectedInitialTabIndex = useMemo(() => {
     const index = children.findIndex(e => e.props?.name == initialRouteName);
@@ -70,7 +72,7 @@ const BottomBarComponent: NavigatorBottomBar = React.forwardRef((props, ref) => 
   };
 
   const updateSelectedTab = useCallback((name) => {
-    selectedTabVariable[0] = name
+    tabSelected = name
     menuRef?.current?.updateSelectedTab(name)
   }, [menuRef, menuRef?.current])
 
